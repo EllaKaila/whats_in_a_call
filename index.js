@@ -6,13 +6,17 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-/* io.on('connection', function(socket){
-  console.log('a user connected');
-    
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-}); */
+app.get('/messages', function(req, res){
+  res.sendFile(__dirname + '/messages.html');
+});
+
+
+var msgs = io.of('/messages');
+
+msgs.on('connection', function(socket){
+  console.log('someone connected');
+});
+msgs.emit('hi', 'everyone!');
 
 io.on('connection', function(socket){ 
   //var tweet = {user: "nodesource", text: "Hello, world!"};	
@@ -21,12 +25,18 @@ io.on('connection', function(socket){
     io.emit('chat message', msg);
   });
   
-  socket.on("tweet", function(tweet){
-    io.emit("tweet", tweet);
-	console.log(tweet);
+  socket.on("feedback", function(feedback){
+	
+    io.emit("feedback", feedback);
+	msgs.emit("feedback", feedback);
+	console.log(feedback);
   });
   
 });
+
+
+
+
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
