@@ -2,7 +2,7 @@ var express = require('express');
 var app = express.createServer(express.logger());
 var io = require('socket.io').listen(app);
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
   res.sendfile('/index.html');
@@ -35,5 +35,5 @@ io.sockets.on('connection', function(socket){
 });
 
 app.listen(process.env.PORT || 3000, function(){
-  console.log('listening');
+  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
