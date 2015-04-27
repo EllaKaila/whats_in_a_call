@@ -1,35 +1,65 @@
 <!doctype html>
 <html>
   <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Feedback form</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #fff; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 1; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-	Your name: <br> <input id="realname"><br><br>
-	Your feedback: <br> <input id="comments"><br><br>
-	<div id="emotion">
-		<input type="radio" name="emotion" value="positive" checked>
-		<label for="happy"><img src="https://c1.staticflickr.com/9/8264/8672563345_5b57672119_b.jpg" width="50" height="50" alt="I'm happy" /></label>
-		<input type="radio" name="emotion" value="neutral">
-		<label for="happy"><img src="http://ragefaces.memesoftware.com/faces/large/neutral-poker-face-l.png" width="50" height="50" alt="I'm neutral" /></label>
-		<input type="radio" name="emotion" value="negative">
-		<label for="happy"><img src="http://www.clipartbest.com/cliparts/4cb/eAq/4cbeAqXcg.jpeg" width="50" height="50" alt="I'm sad" /></label>
-    </div>
-	<button>Send</button>
-    </form>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+	   
+	<form class="form-horizontal">
+	<fieldset>
+
+	<!-- Form Name -->
+	<legend>Feedback</legend>
+
+	<!-- Text input-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="textinput">Your name</label>  
+	  <div class="col-md-4">
+	  <input id="realname" name="textinput" type="text" placeholder="Anonymous" class="form-control input-md" required="">
+		
+	  </div>
+	</div>
+
+	<!-- Text input-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="textinput">Comments</label>  
+	  <div class="col-md-5">
+	  <input id="comments" name="textinput" type="text" placeholder="Best day of my life!" class="form-control input-md" required="">
+		
+	  </div>
+	</div>
+
+	<!-- Select Basic -->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="selectbasic">How happy are you?</label>
+	  <div class="col-md-4">
+		<select id="selectbasic" name="selectbasic" class="form-control">
+		  <option value="-1">Sad</option>
+		  <option value="0">I'll survive</option>
+		  <option value="1">Happy</option>
+		</select>
+	  </div>
+	</div>
+
+	<!-- Button -->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="singlebutton"></label>
+	  <div class="col-md-4">
+		<button id="singlebutton" name="singlebutton" class="btn btn-success">Send</button>
+	  </div>
+	</div>
+
+	</fieldset>
+	</form>
+
+	
+	
     <script>
       var socket = io();
 	  
