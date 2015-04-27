@@ -1,37 +1,39 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var express = require('express');
+var app = express.createServer(express.logger());
+var io = require('socket.io').listen(app);
+
+app.use(express.static('public'));
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.sendfile('/index.html');
 });
 
 app.get('/messages', function(req, res){
-  res.sendFile(__dirname + '/messages.html');
+  res.sendfile('/messages.html');
 });
 
-/* io.configure(function () {  
+io.configure(function () {  
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
- */
-var msgs = io.of('/messages');
 
-msgs.on('connection', function(socket){
+//var msgs = io.of('/messages');
+
+/* msgs.on('connection', function(socket){
   console.log('someone connected');
-});
+}); */
 
-io.on('connection', function(socket){   
+io.sockets.on('connection', function(socket){   
   //io.set("transports", ["xhr-polling"]);
   //io.set("polling duration", 10);
 
   socket.on("feedback", function(feedback){
-    io.emit("feedback", feedback);
-	msgs.emit("feedback", feedback);
+    io.sockets.emit("feedback", feedback);
+	//msgs.sockets.emit("feedback", feedback);
 	console.log(feedback);
   });
 });
 
-http.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT || 3000, function(){
   console.log('listening');
 });
