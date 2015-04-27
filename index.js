@@ -21,12 +21,11 @@ msgs.emit('hi', 'everyone!');
 io.on('connection', function(socket){ 
   //var tweet = {user: "nodesource", text: "Hello, world!"};	
 	
-  socket.on('chat message', function(msg){
+  /* socket.on('chat message', function(msg){
     io.emit('chat message', msg);
-  });
+  }); */
   
   socket.on("feedback", function(feedback){
-	
     io.emit("feedback", feedback);
 	msgs.emit("feedback", feedback);
 	console.log(feedback);
