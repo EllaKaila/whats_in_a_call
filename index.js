@@ -1,39 +1,35 @@
-var express = require('express');
-var app = express.createServer(express.logger());
-var io = require('socket.io').listen(app);
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-app.use(express.static(__dirname + '/public'));
-
-app.get('/', function(req, res){
-  res.sendfile('/index.html');
-});
-
-app.get('/messages', function(req, res){
-  res.sendfile('/messages.html');
-});
-
+/* 
 io.configure(function () {  
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
+}); */
+
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
 });
 
-//var msgs = io.of('/messages');
+app.get('/messages', function(req, res){
+  res.sendFile(__dirname + '/messages.html');
+});
+
+var msgs = io.of('/messages');
 
 /* msgs.on('connection', function(socket){
   console.log('someone connected');
 }); */
 
-io.sockets.on('connection', function(socket){   
-  //io.set("transports", ["xhr-polling"]);
-  //io.set("polling duration", 10);
-
+io.on('connection', function(socket){   
   socket.on("feedback", function(feedback){
-    io.sockets.emit("feedback", feedback);
-	//msgs.sockets.emit("feedback", feedback);
+    io.emit("feedback", feedback);
+	msgs.emit("feedback", feedback);
 	console.log(feedback);
   });
 });
 
-app.listen(process.env.PORT || 3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+http.listen(process.env.PORT || 3000, function(){
+  console.log('listening');
 });
